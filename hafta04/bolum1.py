@@ -1,80 +1,56 @@
-
-# Lab, Bölüm 1: Python. Bu dosyadaki fonksiyonları SİZ yazacaksınız.
+# Lab, Bölüm 2: Testleri bu dosyaya SİZ yazacaksınız.
 #
-# Testler test_bolum1.py dosyasında hazır; o dosyayı değiştirmeyin.
-# Çalıştırmak için bu klasörde:  python -m pytest test_bolum1.py -v
-#
-# 1-4: `pass` satırını silip fonksiyonu yazın.
-# 5-6: Fonksiyon yazılmış ama içinde bir hata var. Testleri çalıştırın, hatayı bulun ve düzeltin.
+# Aşağıda örnek olarak bir test var. Yanına her fonksiyon için kendi testlerinizi ekleyin.
+# Çalıştırmak için bu klasörde:  python -m pytest test_bolum2.py test_hatali_surumler.py -v
 
-# 1. Vize-final sonucu
-def vize_final_sonuc(vize, final):
-    ortalama = vize * 0.4 + final * 0.6
+import pytest
 
-    if ortalama >= 50 and final >= 50:
-        return "Geçti"
-    else:
-        return "Kaldı"
+from bolum2 import sifre_gucu, otopark_ucreti, yuzde_degisim
 
 
-# 2. Asal sayı mı?
-def asal_mi(n):
-    if n < 2:
-        return False
+def test_kisa_sifre_zayif():
+    assert sifre_gucu("abc") == "zayıf"
+    assert sifre_gucu("12345") == "zayıf"
 
-    for i in range(2, n):
-        if n % i == 0:
-            return False
+def test_orta_sifre():
+    assert sifre_gucu("abcdefgh") == "orta"
+    assert sifre_gucu("1234567890") == "orta"
 
-    return True
+def test_guclu_sifre():
+    assert sifre_gucu("abcdefghijkl") == "güçlü"
+    assert sifre_gucu("123456789012345") == "güçlü"
 
+def test_sifre_sinir():
+    assert sifre_gucu("1234567") == "zayıf"
+    assert sifre_gucu("12345678") == "orta"
+    assert sifre_gucu("123456789012") == "güçlü"
 
-# 3. Palindrom mu?
-def palindrom_mu(metin):
-    metin = metin.lower()
-    metin = metin.replace(" ", "")
-
-    if metin == metin[::-1]:
-        return True
-    else:
-        return False
-
-
-# 4. En uzun kelime
-def en_uzun_kelime(cumle):
-    kelimeler = cumle.split()
-
-    if len(kelimeler) == 0:
-        return ""
-
-    en_uzun = kelimeler[0]
-
-    for kelime in kelimeler:
-        if len(kelime) > len(en_uzun):
-            en_uzun = kelime
-
-    return en_uzun
+def test_bos_sifre_hata():
+    with pytest.raises(ValueError):
+        sifre_gucu("")
 
 
-# 5. En düşük not
-def en_dusuk_not(notlar):
-    if len(notlar) == 0:
-        return None
-
-    en_dusuk = notlar[0]
-
-    for n in notlar:
-        if n < en_dusuk:
-            en_dusuk = n
-
-    return en_dusuk
+def test_otopark_ucreti():
+    assert otopark_ucreti(0) == 0
+    assert otopark_ucreti(10) == 0
+    assert otopark_ucreti(15) == 0
+    assert otopark_ucreti(16) == 20
+    assert otopark_ucreti(60) == 20
+    assert otopark_ucreti(61) == 40
+    assert otopark_ucreti(180) == 40
+    assert otopark_ucreti(181) == 60
 
 
-# 6. 1'den n'ye kadar toplam
-def toplam(n):
-    sonuc = 0
+def test_otopark_ucreti_negatif_hata():
+    with pytest.raises(ValueError):
+        otopark_ucreti(-5)
 
-    for i in range(1, n + 1):
-        sonuc = sonuc + i
 
-    return sonuc
+def test_yuzde_degisim():
+    assert yuzde_degisim(200, 250) == 25.0
+    assert yuzde_degisim(200, 150) == -25.0
+    assert yuzde_degisim(100, 100) == 0.0
+
+def test_yuzde_degisim_eski_sifir():
+    with pytest.raises(ValueError):
+        yuzde_degisim(0, 100)
