@@ -1,4 +1,4 @@
-# Alıştırma 3: Lab — Python ve test
+pip# Alıştırma 3: Lab — Python ve test
 
 Bu lab, şimdiye kadar gördüğümüz her şeyi bir arada kullanıyor: Python temelleri (fonksiyon, if, döngü, liste, metin) ve test yazmak (`assert`, pytest, `pytest.raises`, `pytest.approx`, sınır değerleri).
 İki bölümden oluşuyor. Kendi hızınızda, sırayla ilerleyin.
